@@ -16,35 +16,31 @@ Forked from [@ckteebe / CustomBadge](http://github.com/ckteebe/CustomBadge) — 
 
 ## Installation
 
-* Drag the `JSCustomBadge/` folder to your project
+Drag the `JSCustomBadge/` folder to your project
 
 ## How To Use
 
 Create a badge with either of the following methods:
 
 ````objective-c
-
 + (JSCustomBadge *)customBadgeWithString:(NSString *)badgeString
 
 + (JSCustomBadge *)customBadgeWithString:(NSString *)badgeString
-                         withStringColor:(UIColor*)stringColor
-                          withInsetColor:(UIColor*)insetColor
+                         withStringColor:(UIColor *)stringColor
+                          withInsetColor:(UIColor *)insetColor
                           withBadgeFrame:(BOOL)badgeFrameYesNo
-                     withBadgeFrameColor:(UIColor*)frameColor
+                     withBadgeFrameColor:(UIColor *)frameColor
                                withScale:(CGFloat)scale
                              withShining:(BOOL)shining
-
 ````
 
 To change the badge text after the first rendering:
 
 ````objective-c
-
 - (void)autoBadgeSizeWithString:(NSString *)badgeString
-
 ````
 
-See included demo project: `BadgeDemo.xcodeproj`
+####See included demo project: `BadgeDemo.xcodeproj`
 
 ## [MIT License](http://opensource.org/licenses/MIT)
 
