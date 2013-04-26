@@ -1,25 +1,33 @@
-/*
- JSCustomBadge.m
- 
- *** Description: ***
- With this class you can draw a typical iOS badge indicator with a custom text on any view.
- Please use the allocator customBadgeWithString to create a new badge.
- In this version you can modfiy the color inside the badge (insetColor),
- the color of the frame (frameColor), the color of the text and you can
- tell the class if you want a frame around the badge.
- 
- *** License & Copyright ***
- Created by Sascha Marc Paulus www.spaulus.com on 04/2011. Version 2.0
- This tiny class can be used for free in private and commercial applications.
- Please feel free to modify, extend or distribution this class. 
- If you modify it: Please send me your modified version of the class.
- A commercial distribution of this class is not allowed.
- 
- I would appreciate if you could refer to my website www.spaulus.com if you use this class.
- 
- If you have any questions please feel free to contact me (open@spaulus.com).
- */
-
+//
+//  JSCustomBadge.m
+//
+//
+//  Original work by Sascha Marc Paulus
+//  Copyright (c) 2011
+//  https://github.com/ckteebe/CustomBadge
+//  http://www.spaulus.com
+//
+//
+//  The MIT License
+//  Copyright (c) 2013 Jesse Squires
+//
+//  http://www.hexedbits.com
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+//  associated documentation files (the "Software"), to deal in the Software without restriction, including
+//  without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the
+//  following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+//  LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+//  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+//  IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+//  OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
 
 #import "JSCustomBadge.h"
 
@@ -35,9 +43,9 @@
            withScale:(CGFloat)scale
          withShining:(BOOL)shining;
 
-- (void)drawRoundedRectWithContext:(CGContextRef)context withRect:(CGRect)rect;
-- (void)drawShineWithContext:(CGContextRef)context withRect:(CGRect)rect;
-- (void)drawFrameWithContext:(CGContextRef)context withRect:(CGRect)rect;
+- (void)drawRoundedRectWithContext:(CGContextRef)context inRect:(CGRect)rect;
+- (void)drawShineWithContext:(CGContextRef)context inRect:(CGRect)rect;
+- (void)drawFrameWithContext:(CGContextRef)context inRect:(CGRect)rect;
 
 @end
 
@@ -140,10 +148,38 @@
     [self setNeedsDisplay];
 }
 
-
-
 #pragma mark - Drawing
-- (void)drawRoundedRectWithContext:(CGContextRef)context withRect:(CGRect)rect
+- (void)drawRect:(CGRect)rect
+{
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+	[self drawRoundedRectWithContext:context inRect:rect];
+	
+	if(self.badgeShining)
+		[self drawShineWithContext:context inRect:rect];
+	
+	if(self.badgeFrame)
+		[self drawFrameWithContext:context inRect:rect];
+	
+	if([self.badgeText length] > 0.0f) {
+        
+		[self.badgeTextColor set];
+		CGFloat sizeOfFont = 13.5f * self.badgeScaleFactor;
+		
+        if([self.badgeText length] < 2.0f) {
+			sizeOfFont += sizeOfFont * 0.2f;
+		}
+        
+		UIFont *textFont = [UIFont boldSystemFontOfSize:sizeOfFont];
+		CGSize textSize = [self.badgeText sizeWithFont:textFont];
+		
+        [self.badgeText drawAtPoint:CGPointMake((rect.size.width/2.0f - textSize.width/2.0f),
+                                                (rect.size.height/2.0f - textSize.height/2.0f))
+                           withFont:textFont];
+	}
+}
+
+- (void)drawRoundedRectWithContext:(CGContextRef)context inRect:(CGRect)rect
 {
 	CGContextSaveGState(context);
 	
@@ -166,7 +202,7 @@
 	CGContextRestoreGState(context);
 }
 
-- (void)drawShineWithContext:(CGContextRef)context withRect:(CGRect)rect
+- (void)drawShineWithContext:(CGContextRef)context inRect:(CGRect)rect
 {
 	CGContextSaveGState(context);
  
@@ -186,12 +222,12 @@
 	
 	size_t num_locations = 2.0f;
 	CGFloat locations[2] = { 0.0f, 0.4f };
-	CGFloat components[8] = {  0.92f, 0.92f, 0.92f, 1.0f, 0.82f, 0.82f, 0.82f, 0.4f };
+	CGFloat components[8] = { 0.92f, 0.92f, 0.92f, 1.0f, 0.82f, 0.82f, 0.82f, 0.4f };
 
 	CGColorSpaceRef cspace;
 	CGGradientRef gradient;
 	cspace = CGColorSpaceCreateDeviceRGB();
-	gradient = CGGradientCreateWithColorComponents (cspace, components, locations, num_locations);
+	gradient = CGGradientCreateWithColorComponents(cspace, components, locations, num_locations);
 	
 	CGPoint sPoint, ePoint;
 	sPoint.x = 0.0f;
@@ -206,7 +242,7 @@
 	CGContextRestoreGState(context);	
 }
 
-- (void)drawFrameWithContext:(CGContextRef)context withRect:(CGRect)rect
+- (void)drawFrameWithContext:(CGContextRef)context inRect:(CGRect)rect
 {
 	CGFloat radius = CGRectGetMaxY(rect) * self.badgeCornerRoundness;
 	CGFloat puffer = CGRectGetMaxY(rect) * 0.1f;
@@ -232,36 +268,6 @@
 	
     CGContextClosePath(context);
 	CGContextStrokePath(context);
-}
-
-- (void)drawRect:(CGRect)rect
-{
-    CGContextRef context = UIGraphicsGetCurrentContext();
-
-	[self drawRoundedRectWithContext:context withRect:rect];
-	
-	if(self.badgeShining)
-		[self drawShineWithContext:context withRect:rect];
-	
-	if(self.badgeFrame)
-		[self drawFrameWithContext:context withRect:rect];
-	
-	if([self.badgeText length] > 0.0f) {
-        
-		[self.badgeTextColor set];
-		CGFloat sizeOfFont = 13.5f * self.badgeScaleFactor;
-		
-        if([self.badgeText length] < 2.0f) {
-			sizeOfFont += sizeOfFont * 0.2f;
-		}
-        
-		UIFont *textFont = [UIFont boldSystemFontOfSize:sizeOfFont];
-		CGSize textSize = [self.badgeText sizeWithFont:textFont];
-		
-        [self.badgeText drawAtPoint:CGPointMake((rect.size.width/2.0f - textSize.width/2.0f),
-                                                (rect.size.height/2.0f - textSize.height/2.0f))
-                           withFont:textFont];
-	}	
 }
 
 @end
