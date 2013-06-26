@@ -196,7 +196,12 @@
 	CGContextAddArc(context, maxX-radius, maxY-radius, radius, 0.0f, M_PI/2.0f, 0.0f);
 	CGContextAddArc(context, minX+radius, maxY-radius, radius, M_PI/2.0f, M_PI, 0.0f);
 	CGContextAddArc(context, minX+radius, minY+radius, radius, M_PI, M_PI+M_PI/2.0f, 0.0f);
-	CGContextSetShadowWithColor(context, CGSizeMake(1.0f, 1.0f), 1.5f, [UIColor blackColor].CGColor);
+    
+    CGContextSetShadowWithColor(context,
+                                CGSizeMake(0.0f, 1.0f),
+                                2.0f,
+                                [UIColor colorWithWhite:0.0f alpha:0.75f].CGColor);
+    
     CGContextFillPath(context);
 
 	CGContextRestoreGState(context);
