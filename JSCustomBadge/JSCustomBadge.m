@@ -218,14 +218,14 @@ static CGFloat const IC_QUARTERFACTOR = 0.25f;
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
     
-	[self drawRoundedRectWithContext:context inRect:rect];
+	[self drawRoundedRectWithContext:context inRect:self.bounds];
 	
 	if (self.badgeShining) {
-		[self drawShineWithContext:context inRect:rect];
+		[self drawShineWithContext:context inRect:self.bounds];
     }
 	
 	if (self.badgeFrame) {
-		[self drawFrameWithContext:context inRect:rect];
+		[self drawFrameWithContext:context inRect:self.bounds];
     }
 	
 	if ([self.badgeText length] > 0.0f) {
@@ -244,10 +244,10 @@ static CGFloat const IC_QUARTERFACTOR = 0.25f;
         NSStringDrawingContext *drawingContext = [[NSStringDrawingContext alloc] init];
         drawingContext.minimumScaleFactor = 0.5;
         
-        [self.badgeText drawWithRect:CGRectMake(rect.size.width / 2.0f - textSize.width / 2.0f,
-                                                rect.size.height / 2.0f - textSize.height / 2.0f,
-                                                rect.size.width,
-                                                rect.size.height)
+        [self.badgeText drawWithRect:CGRectMake(self.bounds.size.width / 2.0f - textSize.width / 2.0f,
+                                                self.bounds.size.height / 2.0f - textSize.height / 2.0f,
+                                                self.bounds.size.width,
+                                                self.bounds.size.height)
                              options:NSStringDrawingUsesLineFragmentOrigin
                           attributes:textAttributes
                              context:drawingContext];
