@@ -31,8 +31,8 @@
 
 #import "JSCustomBadge.h"
 
-static CGFloat const IC_DEFUALTCONTENTSIZE = 25.0f;
-static CGFloat const IC_DEFUALTCORNERROUNDNESS = 0.4f;
+static CGFloat const IC_DEFAULTCONTENTSIZE = 25.0f;
+static CGFloat const IC_DEFAULTCORNERROUNDNESS = 0.4f;
 static CGFloat const IC_DEFAULTSCALEFACTOR = 1.0f;
 static CGFloat const IC_QUARTERFACTOR = 0.25f;
 
@@ -47,52 +47,35 @@ static CGFloat const IC_QUARTERFACTOR = 0.25f;
 
 @implementation JSCustomBadge
 
-@synthesize badgeText = _badgeText;
-
 #pragma mark - Initialization
 
 - (void)dealloc
 {
-    self.badgeText = nil;
-    self.badgeTextColor = nil;
-    self.badgeInsetColor = nil;
-    self.badgeFrameColor = nil;
     [self removeObserver:self forKeyPath:NSStringFromSelector(@selector(badgeText))];
     [self removeObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize))];
 }
 
 - (void)awakeFromNib
 {
-    self.contentSize = CGSizeMake(IC_DEFUALTCONTENTSIZE, IC_DEFUALTCONTENTSIZE);
-}
-
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    
-    if (self)
-    {
-        [self addObserver:self forKeyPath:NSStringFromSelector(@selector(badgeText)) options:0 context:nil];
-        [self addObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize)) options:0 context:nil];
-        self.contentScaleFactor = [[UIScreen mainScreen] scale];
-		self.backgroundColor = [UIColor clearColor];
-		self.badgeTextColor = [UIColor whiteColor];
-		self.badgeFrame = NO;
-		self.badgeFrameColor = nil;
-		self.badgeInsetColor =  [UIColor colorWithRed:1.0f green:0.22f blue:0.22f alpha:1.0f]; // iOS 7 red
-		self.badgeCornerRoundness = IC_DEFUALTCORNERROUNDNESS;
-		self.badgeScaleFactor = IC_DEFAULTSCALEFACTOR;
-		self.badgeShining = NO;
-        self.badgeShadow = NO;
-        self.badgeText = @"";
-    }
-    
-    return self;
+    self.contentSize = CGSizeMake(IC_DEFAULTCONTENTSIZE, IC_DEFAULTCONTENTSIZE);
+    [self addObserver:self forKeyPath:NSStringFromSelector(@selector(badgeText)) options:0 context:nil];
+    [self addObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize)) options:0 context:nil];
+    self.contentScaleFactor = [[UIScreen mainScreen] scale];
+    self.backgroundColor = [UIColor clearColor];
+    self.badgeTextColor = [UIColor whiteColor];
+    self.badgeFrame = NO;
+    self.badgeFrameColor = nil;
+    self.badgeInsetColor =  [UIColor colorWithRed:1.0f green:0.22f blue:0.22f alpha:1.0f]; // iOS 7 red
+    self.badgeCornerRoundness = IC_DEFAULTCORNERROUNDNESS;
+    self.badgeScaleFactor = IC_DEFAULTSCALEFACTOR;
+    self.badgeShining = NO;
+    self.badgeShadow = NO;
+    self.badgeText = @"";
 }
 
 - (instancetype)initWithString:(NSString *)badgeString withScale:(CGFloat)scale withShining:(BOOL)shining
 {
-	self = [super initWithFrame:CGRectMake(0.0f, 0.0f, IC_DEFUALTCONTENTSIZE, IC_DEFUALTCONTENTSIZE)];
+	self = [super initWithFrame:CGRectMake(0.0f, 0.0f, IC_DEFAULTCONTENTSIZE, IC_DEFAULTCONTENTSIZE)];
     
 	if (self)
     {
@@ -104,7 +87,7 @@ static CGFloat const IC_QUARTERFACTOR = 0.25f;
 		self.badgeFrame = NO;
 		self.badgeFrameColor = nil;
 		self.badgeInsetColor =  [UIColor colorWithRed:1.0f green:0.22f blue:0.22f alpha:1.0f]; // iOS 7 red
-		self.badgeCornerRoundness = IC_DEFUALTCORNERROUNDNESS;
+		self.badgeCornerRoundness = IC_DEFAULTCORNERROUNDNESS;
 		self.badgeScaleFactor = scale;
 		self.badgeShining = shining;
         self.badgeShadow = NO;
@@ -123,7 +106,7 @@ static CGFloat const IC_QUARTERFACTOR = 0.25f;
                    withShining:(BOOL)shining
                     withShadow:(BOOL)shadow
 {
-	self = [super initWithFrame:CGRectMake(0.0f, 0.0f, IC_DEFUALTCONTENTSIZE, IC_DEFUALTCONTENTSIZE)];
+	self = [super initWithFrame:CGRectMake(0.0f, 0.0f, IC_DEFAULTCONTENTSIZE, IC_DEFAULTCONTENTSIZE)];
     
 	if (self)
     {
@@ -135,7 +118,7 @@ static CGFloat const IC_QUARTERFACTOR = 0.25f;
 		self.badgeFrame = badgeFrameYesNo;
 		self.badgeFrameColor = frameColor;
 		self.badgeInsetColor = insetColor;
-		self.badgeCornerRoundness = IC_DEFUALTCORNERROUNDNESS;
+		self.badgeCornerRoundness = IC_DEFAULTCORNERROUNDNESS;
 		self.badgeScaleFactor = scale;
 		self.badgeShining = shining;
         self.badgeShadow = shadow;
@@ -217,11 +200,11 @@ static CGFloat const IC_QUARTERFACTOR = 0.25f;
 	
     if ([badgeString length] >= 2.0f) {
 		flexSpace = [badgeString length];
-		rectWidth = IC_DEFUALTCONTENTSIZE + (stringSize.width + flexSpace); rectHeight = IC_DEFUALTCONTENTSIZE;
+		rectWidth = IC_DEFAULTCONTENTSIZE + (stringSize.width + flexSpace); rectHeight = IC_DEFAULTCONTENTSIZE;
 		retValue = CGSizeMake(rectWidth * self.badgeScaleFactor, rectHeight * self.badgeScaleFactor);
 	}
     else {
-		retValue = CGSizeMake(IC_DEFUALTCONTENTSIZE * self.badgeScaleFactor, IC_DEFUALTCONTENTSIZE * self.badgeScaleFactor);
+		retValue = CGSizeMake(IC_DEFAULTCONTENTSIZE * self.badgeScaleFactor, IC_DEFAULTCONTENTSIZE * self.badgeScaleFactor);
 	}
 	
     _badgeText = badgeString;
