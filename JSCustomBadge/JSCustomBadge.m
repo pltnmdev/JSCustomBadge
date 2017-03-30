@@ -57,6 +57,8 @@ static CGFloat const IC_QUARTERFACTOR = 0.25f;
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+    
     self.contentSize = CGSizeMake(IC_DEFAULTCONTENTSIZE, IC_DEFAULTCONTENTSIZE);
     [self addObserver:self forKeyPath:NSStringFromSelector(@selector(badgeText)) options:0 context:nil];
     [self addObserver:self forKeyPath:NSStringFromSelector(@selector(contentSize)) options:0 context:nil];
